@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import countries from './Countries';
+import { Container, Input, SuggestionItem, SuggestionResult, SuggestionsWrapper } from './styled-components';
 
 export const AutoCompletedText = () =>  {
 
@@ -27,25 +28,23 @@ export const AutoCompletedText = () =>  {
       return null;
     }
     return (
-      <ul>
+      <SuggestionsWrapper>
         {
           suggestions.map((item, index) => (
-            <li className="suggestion-item" key={index} onClick={() => selectedText(item)}>{item}</li>
+            <SuggestionItem key={index} onClick={() => selectedText(item)}>{item}</SuggestionItem>
           ))
         }
-      </ul>
+      </SuggestionsWrapper>
     )
   }
 
 
   return (
-    <div>
-      <div id="notebooks">
-        <h2>Auto completed</h2>
-        <input id="query" type="text" onChange={onTextChange} value={text} />
-        {renderSuggestions()}
-        <span>suggestions: {suggestions.length}</span>
-      </div>
-    </div>
+    <Container>
+      <h2>Auto completed</h2>
+      <Input type="text" onChange={onTextChange} value={text} color="red" />
+      {renderSuggestions()}
+      <SuggestionResult>suggestions: {suggestions.length}</SuggestionResult>
+    </Container>
   )
 }
