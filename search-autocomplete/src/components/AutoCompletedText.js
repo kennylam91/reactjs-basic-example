@@ -1,39 +1,28 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import countries from './Countries';
 
-export default class AutoCompletedText extends Component {
+export const AutoCompletedText = () =>  {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      suggestions: [],
-      text: ''
-    }
-  }
+  const [suggestions, setSuggestions] = useState([])
+  const [text, setText] = useState('')
 
-  onTextChange = (e) => {
+  const onTextChange = (e) => {
     let value = e.target.value;
     let suggestions = [];
     if(value.length > 0){
       let regex = new RegExp(`^${value}`, 'i')
       suggestions = countries.sort().filter(v => regex.test(v))
     }
+    setText(value)
+    setSuggestions(suggestions)
+  };
 
-    this.setState(() => ({
-      suggestions, 
-      text: value
-    }))
-  }
+  const selectedText = (value) =>  {
+    setText(value)
+    setSuggestions([])
+  };
 
-  selectedText(value) {
-    this.setState(() => ({
-      text: value,
-      suggestions: []
-    }))
-  }
-
-  renderSuggestions = () => {
-    let {suggestions} = this.state;
+  const renderSuggestions = () => {
     if(suggestions.length === 0) {
       return null;
     }
@@ -41,7 +30,7 @@ export default class AutoCompletedText extends Component {
       <ul>
         {
           suggestions.map((item, index) => (
-            <li className="suggestion-item" key={index} onClick={() => this.selectedText(item)}>{item}</li>
+            <li className="suggestion-item" key={index} onClick={() => selectedText(item)}>{item}</li>
           ))
         }
       </ul>
@@ -49,17 +38,14 @@ export default class AutoCompletedText extends Component {
   }
 
 
-  render() {
-    const {text, suggestions} = this.state;
-    return (
-      <div>
-        <div id="notebooks">
-          <h2>Auto completed</h2>
-          <input id="query" type="text" onChange={this.onTextChange} value={text} />
-          {this.renderSuggestions()}
-          <span>suggestions: {suggestions.length}</span>
-        </div>
+  return (
+    <div>
+      <div id="notebooks">
+        <h2>Auto completed</h2>
+        <input id="query" type="text" onChange={onTextChange} value={text} />
+        {renderSuggestions()}
+        <span>suggestions: {suggestions.length}</span>
       </div>
-    )
-  }
+    </div>
+  )
 }

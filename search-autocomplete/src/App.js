@@ -1,5 +1,5 @@
 import './App.css';
-import AutoCompletedText from './components/AutoCompletedText';
+import {AutoCompletedText} from './components/AutoCompletedText';
 
 function App() {
   return (
